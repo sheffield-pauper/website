@@ -1,9 +1,9 @@
 class SiteHeader extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
-      <header style="background-color:#6495ED">
-        <h3 style="float:left;padding:30px;margin:0px;color:white">Sheffield Pauper</h3>
-        <nav style="float:left;padding:30px">
+      <header>
+        <h3 style="padding:30px;margin:0px;color:white">Sheffield Pauper</h3>
+        <nav style="padding:30px">
             <ul>
             <li><a href="index.html">Home</a></li> 
             <li><a href="rules.html">Rules</a></li>
@@ -13,6 +13,7 @@ class SiteHeader extends HTMLElement {
             </ul>
         </nav>
       </header>
+      <div class="break"></div>
     `;
   }
 }

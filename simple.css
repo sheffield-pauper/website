@@ -68,6 +68,7 @@ html {
   /* Set the font globally */
   font-family: var(--sans-font);
   scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
 }
 
 .break {
@@ -98,17 +99,19 @@ item {
 
 header {
   background-color: var(--titlebar);
-  border-bottom: var(--border-width) solid var(--border);
   text-align: center;
-  padding: 0 0.5rem 0.5rem 0.5rem;
-  position: fixed;
+  /* Sticky (not fixed) keeps the header in the document flow, so it
+     never covers the content below it. */
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
+  z-index: 100;
+  flex-basis: 100%;
   padding: 3px;
-  border-bottom: 1px solid black;
+  border-bottom: var(--border-width) solid black;
   display: flex;
-    align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 header > * > a {
@@ -129,9 +132,9 @@ body > header p {
   margin: 1rem auto;
 }
 
-/* Add a little padding to ensure spacing is correct between content and header nav */
+/* A little breathing room between header and content */
 main {
-  padding-top: 1.5rem;
+  padding-top: 1rem;
 }
 
 site-header {
@@ -328,11 +331,23 @@ header nav a[aria-current="true"] {
 
 /* Reduce nav side on mobile */
 @media only screen and (max-width: 720px) {
+  /* A wrapped, multi-row nav is too tall to stay pinned on a small screen */
+  header {
+    position: static;
+  }
+
+  html {
+    scroll-padding-top: 0;
+  }
+
+  header nav {
+    padding: 0.5rem 0;
+  }
+
   header nav a {
     border: none;
     padding: 0.1rem 0.5rem; /* Keep some padding instead of 0 */
-
-      ext-decoration: underline;
+    text-decoration: underline;
     line-height: 1;
   }
 
@@ -766,6 +781,7 @@ div.notice p:last-of-type {
   }
   body > header {
     background-color: unset;
+    position: static;
   }
   body > header nav,
   body > footer {

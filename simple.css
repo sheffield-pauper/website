@@ -100,12 +100,7 @@ item {
 header {
   background-color: var(--titlebar);
   text-align: center;
-  /* Sticky (not fixed) keeps the header in the document flow, so it
-     never covers the content below it. */
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  flex-basis: 100%;
+  width: 100%;
   padding: 3px;
   border-bottom: var(--border-width) solid black;
   display: flex;
@@ -137,8 +132,14 @@ main {
   padding-top: 1rem;
 }
 
+/* The wrapper is what sticks and spans the page. Sticky (not fixed) keeps it
+   in the document flow, so it never covers the content below it. */
 site-header {
-    overflow: auto;
+  display: block;
+  flex-basis: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 body > footer {
@@ -280,10 +281,17 @@ input:enabled:focus-visible:where(
 }
 
 /* Format navigation */
+header h3 {
+  margin: 0;
+  padding: 1rem 1.5rem;
+  color: white;
+  font-size: 1.5rem;
+}
+
 header nav {
   font-size: 1rem;
   line-height: 2;
-  padding: 1rem 0 0 0;
+  padding: 1rem 1.5rem;
 }
 
 /* Use flexbox to allow items to wrap, as needed */
@@ -332,7 +340,7 @@ header nav a[aria-current="true"] {
 /* Reduce nav side on mobile */
 @media only screen and (max-width: 720px) {
   /* A wrapped, multi-row nav is too tall to stay pinned on a small screen */
-  header {
+  site-header {
     position: static;
   }
 
@@ -340,8 +348,13 @@ header nav a[aria-current="true"] {
     scroll-padding-top: 0;
   }
 
+  header h3 {
+    padding: 0.75rem 1rem 0;
+    font-size: 1.25rem;
+  }
+
   header nav {
-    padding: 0.5rem 0;
+    padding: 0.5rem 1rem;
   }
 
   header nav a {
@@ -426,11 +439,38 @@ details {
 }
 
 summary {
+  display: flex;            /* also removes the native marker */
+  align-items: center;      /* centre arrow against a heading */
+  gap: 0.6rem;
   cursor: pointer;
   font-weight: bold;
   padding: 0.7rem 1rem;
   margin: -0.7rem -1rem;
-  word-break: break-all;
+  list-style: none;         /* Firefox/Chrome */
+}
+
+summary::-webkit-details-marker {
+  display: none;            /* Safari */
+}
+
+/* Custom arrow */
+summary::before {
+  content: "▸";
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--accent);
+  transition: transform 0.2s;
+}
+
+details[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+summary > h2,
+summary > h3 {
+  margin: 0;
+  font-size: 1.6rem;
 }
 
 details[open] > summary + * {
@@ -779,11 +819,13 @@ div.notice p:last-of-type {
   body {
     display: block;
   }
-  body > header {
-    background-color: unset;
+  site-header {
     position: static;
   }
-  body > header nav,
+  site-header header {
+    background-color: unset;
+  }
+  site-header nav,
   body > footer {
     display: none;
   }
